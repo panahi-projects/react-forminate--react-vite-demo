@@ -46,6 +46,15 @@ const FormData: FormDataCollection = {
       labelClassName:
         "block mb-2 text-sm font-medium text-gray-900 dark:text-white",
     },
+    {
+      id: "gender",
+      label: "Gender",
+      type: "radio",
+      options: ["Male", "Female"],
+      required: true,
+      labelClassName:
+        "block mb-2 text-sm font-medium text-gray-900 dark:text-white",
+    },
   ],
 };
 

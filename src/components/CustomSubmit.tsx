@@ -24,10 +24,11 @@ const CustomForm = () => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("values: ", values);
 
     const isValid = validateForm(CustomSubmitFormData);
     console.log(`Form is: ${isValid ? "valid" : "invalid"}`);
+
+    console.log("values: ", values);
   };
 
   return (
