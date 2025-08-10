@@ -1,0 +1,8 @@
+.my-input {
+  background-color: #690c8a;
+  color: #aeaeae;
+  padding: 4px 8px;
+}
+.my-input.field-validation-error {
+  border: 3px solid #ff00b3;
+}

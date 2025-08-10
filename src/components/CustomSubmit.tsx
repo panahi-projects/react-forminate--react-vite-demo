@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   DynamicForm,
   FormProvider as CustomProvider,
@@ -19,13 +20,57 @@ const CustomSubmit = () => {
   );
 };
 
+const SmartSubmitButton = () => {
+  const { values, errors, validateForm, touched } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const isValid = validateForm(CustomSubmitFormData);
+    if (!isValid) {
+      // Scroll to first error
+      console.error("Form is not valid!", errors);
+      const firstError = Object.keys(errors)[0];
+      document.getElementById(firstError)?.scrollIntoView();
+    } else {
+      console.info("Form is valid and submit...");
+      // await submitToServer(values);
+    }
+
+    setIsSubmitting(false);
+  };
+
+  const hasErrors = Object.keys(errors).some((key) => touched[key]);
+  const isComplete =
+    Object.keys(values).length === CustomSubmitFormData.fields.length;
+
+  return (
+    <button
+      className={`submit-btn 
+        ${hasErrors ? "error-state" : ""}
+        ${!isComplete ? "incomplete-state" : ""}
+      `}
+      onClick={handleSubmit}
+      disabled={isSubmitting}
+    >
+      {isSubmitting
+        ? "Loading..."
+        : hasErrors
+          ? "Fix Errors to Submit"
+          : "Submit Application"}
+    </button>
+  );
+};
+
 const CustomForm = () => {
   const { values, validateForm } = useForm(); // Now useForm() is inside CustomProvider
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isValid = validateForm(CustomSubmitFormData);
+    const isValid: boolean = await validateForm(CustomSubmitFormData);
     console.log(`Form is: ${isValid ? "valid" : "invalid"}`);
 
     console.log("values: ", values);
@@ -39,7 +84,8 @@ const CustomForm = () => {
         submitDetails={{ visibility: false }}
         customProvider={CustomProvider} // Pass the custom provider to DynamicForm
       />
-      <button
+      <SmartSubmitButton />
+      {/* <button
         style={{
           backgroundColor: "#d8049c",
           border: "none",
@@ -56,7 +102,7 @@ const CustomForm = () => {
         onClick={onSubmit}
       >
         Submit Form
-      </button>
+      </button> */}
     </div>
   );
 };

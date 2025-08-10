@@ -1,11 +1,33 @@
-import { FormDataCollectionType } from "../../../react-forminate/src";
+import {
+  DynamicForm,
+  FormDataCollectionType,
+} from "../../../../react-forminate/src";
+
+interface CustomSubmitProps {
+  children: React.ReactNode;
+}
+const CustomSubmit = ({ children }: CustomSubmitProps) => {
+  const onSubmit = () => {
+    console.log("Submitted");
+  };
+  return (
+    <div className="flex justify-end mt-8">
+      <button
+        onClick={onSubmit}
+        className="py-2 px-8 bg-emerald-400 hover:bg-emerald-500 transition text-gray-50 cursor-pointer"
+      >
+        {children}
+      </button>
+    </div>
+  );
+};
 
 const FormData: FormDataCollectionType = {
-  formId: "customSubmitForm",
-  title: "Form with custom submit button",
+  formId: "customSubmit2",
+  title: "Simple Form Example",
   options: {
     submit: {
-      visibility: false,
+      component: <CustomSubmit>Submit Button</CustomSubmit>,
     },
   },
   fields: [
@@ -47,23 +69,23 @@ const FormData: FormDataCollectionType = {
         "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5",
       labelClassName: "block mb-2 text-sm font-medium text-gray-900",
     },
-    {
-      fieldId: "gender",
-      label: "Gender",
-      type: "radio",
-      options: [
-        {
-          label: "Male",
-          value: "male",
-        },
-        {
-          label: "Female",
-          value: "female",
-        },
-      ],
-      required: true,
-    },
   ],
 };
 
-export default FormData;
+const CustomSubmit2 = () => {
+  const onSubmit = (value: any, isValid: boolean) => {
+    console.log("value", value);
+
+    if (isValid) {
+      alert(JSON.stringify(value, null, 2));
+    }
+  };
+  return (
+    <div>
+      <h1>Custom Submit 2</h1>
+      <DynamicForm formData={FormData} onSubmit={onSubmit} />
+    </div>
+  );
+};
+
+export default CustomSubmit2;
